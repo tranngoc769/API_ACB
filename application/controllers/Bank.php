@@ -5,7 +5,7 @@ class ACB_Response
     public $status;
     public $response;
 }
-class History extends CI_Controller
+class Bank extends CI_Controller
 {
     public function __construct()
     {
@@ -18,14 +18,14 @@ class History extends CI_Controller
     public function test_mail(){
         send_mail($this,"TEST", true);
     }
-    private function get_history($accessToken, $max_row, $username)
+    private function checkName($accessToken, $account,  $bankCode, $username)
     {
         $acb_res = new ACB_Response();
         $acb_res->status = true;
         $headers = array(
             'Authorization: Bearer ' . $accessToken
         );
-        $response = do_request(HISTORY_URL . "?maxRows=" . $max_row . "&account=" . $username, null, "GET", $headers);
+        $response = do_request(BANKSERVICE . $account."?bankCode=".$bankCode."&accountNumber=". $username, null, "GET", $headers);
         $his_response = json_decode($response);
         $acb_res->response = $response;
         if (isset($his_response->codeStatus) && isset($his_response->messageStatus)) {
@@ -43,14 +43,18 @@ class History extends CI_Controller
     {
         $get_success = false;
         $error_array = array();
-        $max_row = 20;
-        if (isset($_GET['row'])) {
-            if ($_GET['row'] * 1 != 0) {
-                $max_row = $_GET['row'];
-            }
-        }
-        if ($max_row > 5){
-            $max_row = 5;
+        $bankCode = "";
+        $account = "";
+        
+        if (isset($_GET['bankCode']) && isset($_GET['account'])) {
+            $account = $_GET['account'];
+            $bankCode = $_GET['bankCode'];
+        }else{
+            $api_res = array("status" => "failed", "data" => "missed bankCode or account");
+            $error_msg = json_encode($api_res);
+            send_mail($this,$error_msg);
+            echo ($error_msg);
+            return;
         }
         $ts_now = strtotime("now");
         $users = $this->user_model->get_all();
@@ -63,7 +67,7 @@ class History extends CI_Controller
             $status = $this->access_model->check($username, $ts_now);
             if ($status) {
                 $accessToken = $status;
-                $acb_res = $this->get_history($accessToken, $max_row, $username);
+                $acb_res = $this->checkName($accessToken, $account, $bankCode, $username);
                 if ($acb_res->status == false) {
                     $error_array[$username] = $acb_res->response;
                 } else {
@@ -83,7 +87,7 @@ class History extends CI_Controller
                     $this->access_model->unregister($username);
                     $this->access_model->register($api_data);
                     // Get Records
-                    $acb_res = $this->get_history($accessToken, $max_row, $username);
+                    $acb_res = $this->checkName($accessToken, $account, $bankCode, $username);
                     if ($acb_res->status == false) {
                         $error_array[$username] = $acb_res->response;
                     } else {

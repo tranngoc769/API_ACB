@@ -86,4 +86,5 @@ defined('EXIT__AUTO_MAX')      OR define('EXIT__AUTO_MAX', 125); // highest auto
 
 defined("AUTH_URL") or define("AUTH_URL","https://apiapp.acb.com.vn/mb/auth/tokens");
 defined("HISTORY_URL") or define("HISTORY_URL","https://apiapp.acb.com.vn/mb/legacy/ss/cs/bankservice/saving/tx-history");
+defined("BANKSERVICE") or define("BANKSERVICE","https://apiapp.acb.com.vn/mb/legacy/ss/cs/bankservice/transfers/accounts/");
 defined("TOKEN_TABLE") or define("TOKEN_TABLE","api_token");

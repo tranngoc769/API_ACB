@@ -58,8 +58,9 @@ function send_mail($ci,$message, $debug = false)
         // $htmlMessage = $ci->parser->parse('messages/email', $data, true);
         $ci->email->subject($subject);
         $ci->email->message($message);
+        $status = $ci->email->send();
         if ($debug){
-            if ($ci->email->send()) {
+            if ($status) {
                 echo 'Your email was sent';
             } else {
                 echo($ci->email->print_debugger());
