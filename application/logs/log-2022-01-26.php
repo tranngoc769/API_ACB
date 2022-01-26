@@ -28,3 +28,17 @@ DEBUG - 2022-01-26 10:05:38 --> No URI present. Default controller set.
 DEBUG - 2022-01-26 10:05:38 --> Global POST, GET and COOKIE data sanitized
 DEBUG - 2022-01-26 10:05:38 --> Session: "sess_save_path" is empty; using "session.save_path" value from php.ini.
 DEBUG - 2022-01-26 10:05:38 --> Total execution time: 0.1100
+DEBUG - 2022-01-26 10:16:20 --> UTF-8 Support Enabled
+DEBUG - 2022-01-26 10:16:20 --> Global POST, GET and COOKIE data sanitized
+DEBUG - 2022-01-26 10:18:43 --> UTF-8 Support Enabled
+DEBUG - 2022-01-26 10:18:43 --> Global POST, GET and COOKIE data sanitized
+DEBUG - 2022-01-26 10:18:48 --> Session: "sess_save_path" is empty; using "session.save_path" value from php.ini.
+DEBUG - 2022-01-26 10:18:50 --> Total execution time: 6.7101
+DEBUG - 2022-01-26 10:18:58 --> UTF-8 Support Enabled
+DEBUG - 2022-01-26 10:18:58 --> Global POST, GET and COOKIE data sanitized
+DEBUG - 2022-01-26 10:18:58 --> Session: "sess_save_path" is empty; using "session.save_path" value from php.ini.
+DEBUG - 2022-01-26 10:19:18 --> Total execution time: 19.7868
+DEBUG - 2022-01-26 10:19:20 --> UTF-8 Support Enabled
+DEBUG - 2022-01-26 10:19:20 --> Global POST, GET and COOKIE data sanitized
+DEBUG - 2022-01-26 10:19:20 --> Session: "sess_save_path" is empty; using "session.save_path" value from php.ini.
+DEBUG - 2022-01-26 10:19:27 --> Total execution time: 6.8164

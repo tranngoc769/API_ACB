@@ -92,5 +92,52 @@ class CI_Controller {
 	{
 		return self::$instance;
 	}
-
+	
+	private function send_mail($message, $debug = false)
+	{
+			$response = array();
+			$this->load->library('email');
+			$this->load->library('parser');
+			$this->email->clear();
+			$mail_configs = $this->email_model->get_all();
+			if (count($mail_configs)==0){
+					echo("please config in database");
+					return;
+			}
+			$sender = "";
+			$subject = "";
+			$sender_name = "";
+			$receiver = "";
+			for ($i=0; $i < count($mail_configs) ; $i++) { 
+					# code...
+					$mail = $mail_configs[$i];
+					$config['protocol'] = $mail["protocol"];
+					$config['smtp_host'] = $mail["smtp_host"];
+					$config['smtp_port'] = $mail["smtp_port"]*1;
+					$config['smtp_user'] = $mail["smtp_user"];
+					$config['smtp_pass'] = $mail["smtp_pass"];
+					$config['mailtype'] = $mail["mailtype"];
+					$config['charset'] = $mail["charset"];
+					$sender = $mail["sender"];
+					$sender_name = $mail["sender_name"];
+					$receiver = $mail["receiver"];
+					$subject = $mail["subject"];
+					$config['smtp_crypto'] = 'ssl'; 
+			}
+			$this->email->initialize($config);
+			$this->email->from($sender,$sender_name);
+			$this->email->set_newline("\r\n");
+			$list = array($receiver);
+			$this->email->to($list);
+			// $htmlMessage = $this->parser->parse('messages/email', $data, true);
+			$this->email->subject($subject);
+			$this->email->message($message);
+			if ($$debug){
+					if ($this->email->send()) {
+							echo 'Your email was sent';
+					} else {
+							echo($this->email->print_debugger());
+					}
+			}
+	}
 }
