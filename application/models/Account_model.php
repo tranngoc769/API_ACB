@@ -1,0 +1,47 @@
+<?php
+
+class Account_model extends CI_Model {
+    public function login($data) {
+        $query = $this->db
+            ->limit(1)
+            ->get_where("users", array("username" => $data["username"]))
+            ->row();
+        $en_pass = md5($data['password']);
+        $vv = $en_pass == $query->password;
+        if ($vv) {
+            $data = array ("username" => $query->username, "usertype" => $query->usertype, "userid" => $query->id);
+            $this->session->set_userdata($data);
+            return  $query->usertype;
+        }  else { 
+            return false; 
+        }	
+    }
+    public function customer_info($data)
+    {
+        return $this->db->insert("customer", $data);
+    }
+    
+    public function xoaemail($data)
+    {
+        return $this->db->where("phone", $data)->delete("customer");
+    }
+    
+    public function get_all_email()
+    {
+        return $this->db->get("customer")->result();
+    }
+    public function count_all_email()
+    {
+        return count($this->db->get("customer")->result());
+    }
+    public function get_all_email_paging($page, $limit)
+    {
+        if ($page < 0) {$page = 0;}
+        return $this->db->limit($limit)->offset($page)->get("customer")->result();
+    }
+    public function register($data)
+    {
+        return $this->db->insert(USER, $data);
+    }
+
+}
