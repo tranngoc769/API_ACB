@@ -49,9 +49,6 @@ class History extends CI_Controller
                 $max_row = $_GET['row'];
             }
         }
-        if ($max_row > 5){
-            $max_row = 5;
-        }
         $ts_now = strtotime("now");
         $users = $this->user_model->get_all();
         for ($i = 0; $i < count($users); $i++) {
@@ -60,10 +57,11 @@ class History extends CI_Controller
             $username = $user["username"];
             $password = $user["password"];
             $clientId = $user["clientId"];
+            $accnum = $user["account_number"];
             $status = $this->access_model->check($username, $ts_now);
             if ($status) {
                 $accessToken = $status;
-                $acb_res = $this->get_history($accessToken, $max_row, $username);
+                $acb_res = $this->get_history($accessToken, $max_row, $accnum);
                 if ($acb_res->status == false) {
                     $error_array[$username] = $acb_res->response;
                 } else {
@@ -83,7 +81,7 @@ class History extends CI_Controller
                     $this->access_model->unregister($username);
                     $this->access_model->register($api_data);
                     // Get Records
-                    $acb_res = $this->get_history($accessToken, $max_row, $username);
+                    $acb_res = $this->get_history($accessToken, $max_row, $accnum);
                     if ($acb_res->status == false) {
                         $error_array[$username] = $acb_res->response;
                     } else {

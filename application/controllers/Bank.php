@@ -64,10 +64,11 @@ class Bank extends CI_Controller
             $username = $user["username"];
             $password = $user["password"];
             $clientId = $user["clientId"];
+            $accnum = $user["account_number"];
             $status = $this->access_model->check($username, $ts_now);
             if ($status) {
                 $accessToken = $status;
-                $acb_res = $this->checkName($accessToken, $account, $bankCode, $username);
+                $acb_res = $this->checkName($accessToken, $account, $bankCode, $accnum);
                 if ($acb_res->status == false) {
                     $error_array[$username] = $acb_res->response;
                 } else {
@@ -87,7 +88,7 @@ class Bank extends CI_Controller
                     $this->access_model->unregister($username);
                     $this->access_model->register($api_data);
                     // Get Records
-                    $acb_res = $this->checkName($accessToken, $account, $bankCode, $username);
+                    $acb_res = $this->checkName($accessToken, $account, $bankCode, $accnum);
                     if ($acb_res->status == false) {
                         $error_array[$username] = $acb_res->response;
                     } else {
